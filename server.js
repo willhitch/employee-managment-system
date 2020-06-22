@@ -110,10 +110,7 @@ function addRole() {
       {
         type: "input",
         name: "department",
-        message: function () {
-          viewDepartments()
-          return "What is the department id?"
-        },
+        message: "What is the department id?",
       },
     ])
     .then(function (answer) {
@@ -146,18 +143,12 @@ function addEmployee() {
       {
         type: "input",
         name: "role",
-        message: function () {
-          viewRoles()
-          return "What is the role id?"
-        },
+        message: "What is the role id?",
       },
       {
         type: "input",
         name: "manager",
-        message: function () {
-          viewDepartments()
-          return "What is the manager id?"
-        },
+        message: "What is the manager id?",
       },
     ])
     .then(function (answer) {
@@ -177,27 +168,56 @@ function addEmployee() {
 function viewDepartments() {
   connection.query("SELECT * FROM department", function (err, result) {
     if (err) throw err
+    console.log("\n" + "Departments")
     console.table(result)
   })
-  connection.end()
+  // connection.end()
+  init()
 }
 
 function viewRoles() {
   connection.query("SELECT * FROM role", function (err, result) {
     if (err) throw err
+    console.log("\n" + "Roles")
     console.table(result)
   })
-  connection.end()
+  // connection.end()
+  init()
 }
 
 function viewEmployees() {
   connection.query("SELECT * FROM employee", function (err, result) {
     if (err) throw err
+    console.log("\n" + "Employees")
     console.table(result)
   })
-  connection.end()
+  // connection.end()
+  init()
 }
 
-function UpdateRole() {}
+function UpdateRole() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "employee",
+        message: "What is the employee id?",
+      },
+      {
+        type: "input",
+        name: "role",
+        message: "What is the new role id?",
+      },
+    ])
+    .then(function (answer) {
+      var query = "UPDATE employee SET role_id ? WHERE id ? "
+      connection.query(query, [answer.role, answer.employee], function (
+        err,
+        result
+      ) {
+        if (err) throw err
+      })
+    })
+}
 
 init()
